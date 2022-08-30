@@ -3,24 +3,44 @@ let shoppingList = ["Latte", "Uova", "Prosciutto", "Salame", "Farina", "Mozzarel
 let count = 0;
 
 function addToList() {
-while (count < shoppingList.length) {
-  const element = document.createElement("li");
-  element.innerHTML = `                    
+    htmlList.innerHTML = "";
+    count = 0;
+  while (count < shoppingList.length) {
+    const element = document.createElement("li");
+    element.innerHTML = `                    
   <input type="checkbox" name="${shoppingList[count]}" id="${count}">
-    <label for="${shoppingList[count]}-${count}">${shoppingList[count]}</label>
+    <label for="${count}">${shoppingList[count]}</label>
     `;
-  htmlList.append(element);
-  count++;
+    htmlList.append(element);
+    count++;
+  }
 }
-}
-addToList()
+addToList();
 
+const insert = document.getElementById("insert");
 
-const insert = document.getElementById('insert');
+insert.addEventListener("click", () => {
+  let text = document.getElementById("addList").value.trim();
+  if (text !== "") {
+    shoppingList.push(text);
+    addToList();
+  }
+});
 
-insert.addEventListener('click', () => {
-    shoppingList.push(document.getElementById('addList').value) 
-    addToList()
+const remove = document.getElementById("remove");
 
+remove.addEventListener("click", () => {
+  const checked = document.querySelectorAll("li > input[type=checkbox]");
+  for (let i = 0; i < checked.length; i++) {
+    if (checked[i].checked) {
+      shoppingList[i] = "";
+    }
+  }
 
-})
+  var filter = shoppingList.filter((value, index) => {
+    if (value !== "") return value;
+  });
+  shoppingList = filter;
+  addToList()
+  console.log(shoppingList);
+});
